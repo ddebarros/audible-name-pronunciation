@@ -18,7 +18,7 @@ async function removePronunciation(args) {
         BIN_TO_UUID(uuid) as uuid,
         secret
       FROM pronunciations
-      WHERE uuid = UUID_TO_BIN(?)
+      WHERE uuid = UUID_TO_BIN('?')
     `
 
     const [selectRow] = await connection.query(selectSql, [id]);
@@ -29,6 +29,8 @@ async function removePronunciation(args) {
         body: `unknown resource with id: ${id} `
       } 
     }
+    
+    console.log('selectedPronunciation: ', selectedPronunciation);
 
     const secretMatches = await compareSecret(secret, selectedPronunciation.secret);
     if (!secretMatches) {
