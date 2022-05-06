@@ -1,0 +1,18 @@
+packages:
+  - name: pronunciations
+    actions:
+      - name: pronunciation
+        limits: 
+          timeout: 5000
+          memory: 256
+environment:
+  SPACES_ENDPOINT: "${SPACES_ENDPOINT}"
+  SPACES_NAME: "${SPACES_NAME}"
+  SPACES_KEY: "${SPACES_KEY}"
+  SPACES_SECRET: "${SPACES_SECRET}"
+  
+  DB_HOST: "${DB_HOST}"
+  DB_PORT: "${DB_PORT}"
+  DB_USER: "${DB_USER}"
+  DB_PASSWORD: "${DB_PASSWORD}"
+  DB_NAME: "${DB_NAME}"
