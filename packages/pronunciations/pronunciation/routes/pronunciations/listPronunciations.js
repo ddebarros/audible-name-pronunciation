@@ -3,7 +3,6 @@ const { getSpacesFileBaseUrl } = require('../storage/spaces');
 
 async function listPronunciations(args) {
   try {
-    console.log('connecting to db...')
     const connection = await mysql;
     const sql = `
       SELECT 
