@@ -13,12 +13,3 @@ module.exports = {
   encryptSecret,
   compareSecret
 }
-
-// const p = '1234'
-// async function run() {
-//   const hash = await encryptPassword(p);
-//   console.log('Hash: ', hash);
-//   console.log(await comparePassword('123', hash));
-// }
-
-run();
