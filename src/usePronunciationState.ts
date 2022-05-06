@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import * as uuid from 'uuid';
 
-export const API_BASE_URL = 'https://faas-nyc1-26c15.doserverless.co/api/v1/web/fn-11e91654-34c5-4fb9-b38f-fd1162224e76/pronunciations/pronunciation'
+export const API_BASE_URL = 'api/pronunciations/pronunciation'
 
 async function uploadFile(
   prefix: string,
