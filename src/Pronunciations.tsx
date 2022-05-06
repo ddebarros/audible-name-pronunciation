@@ -5,7 +5,7 @@ import { usePronunciationState } from './usePronunciationState';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import PronunciationCard from './PronunciationCard';
 import NewPronunciationDialog from './NewPronunciationDialog';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import RemovePronunciationDialog from './RemovePronunciationDialog';
 import PronunciationCardsSkeleton from './PronunciationCardsSkeleton';
 
@@ -20,6 +20,20 @@ const Pronunciations = () => {
   const { pronunciations, loadingPronunciations, addPronunciation, removePronunciation } = usePronunciationState();
   const [isAddModalOpened, setAddModalOpen] = useState<boolean>(false);
   const [pronunciationToDelete, setPronunciationToDelete] = useState<string | undefined>(undefined);
+  const [searchTerm, setSearchTerm] = useState<string | undefined>(undefined);
+
+  const filteredPronunciations = useMemo(() => {
+    const term = searchTerm?.trim().toLocaleLowerCase() ?? ''
+    if (term === '') {
+      return pronunciations
+    }
+
+    return pronunciations.filter((p) => {
+      const soundsLike = p.sounds_like.toLowerCase();
+      const name = p.name.toLowerCase();
+      return soundsLike.includes(term) || name.includes(term)
+    })
+  }, [pronunciations, searchTerm]);
 
   return (
     <Box sx={{ height: '100vh' }} >
@@ -38,6 +52,7 @@ const Pronunciations = () => {
           InputProps={{
             startAdornment: <SearchOutlinedIcon color='disabled' />
           }}
+          onChange={(event) => setSearchTerm(event.target.value)}
           placeholder='Search'
         />
       </Paper>
@@ -45,7 +60,7 @@ const Pronunciations = () => {
       {loadingPronunciations
         ? <PronunciationCardsSkeleton />
         : (<Grid container spacing={2}>
-          {pronunciations.map((pronunciation) => {
+          {filteredPronunciations.map((pronunciation) => {
             return <PronunciationCard onRemove={setPronunciationToDelete} key={pronunciation.uuid} pronunciation={pronunciation} />
           })}
         </Grid>)

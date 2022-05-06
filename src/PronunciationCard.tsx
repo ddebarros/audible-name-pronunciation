@@ -8,6 +8,10 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { PronunciationSpec } from './usePronunciationState';
 
+function copyToClipboard(text: string) {
+  navigator.clipboard.writeText(text);
+}
+
 interface PronunciationCardProps {
   pronunciation: PronunciationSpec;
   onRemove: (uuid: string) => void
@@ -80,7 +84,7 @@ const PronunciationCard = ({ pronunciation, onRemove }: PronunciationCardProps) 
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
           <Tooltip title="Copy Audio URL">
-            <IconButton size='small' >
+            <IconButton onClick={() => copyToClipboard(pronunciation.audio_path ?? '')} size='small' >
               <ContentCopyIcon fontSize='small' />
             </IconButton>
           </Tooltip>

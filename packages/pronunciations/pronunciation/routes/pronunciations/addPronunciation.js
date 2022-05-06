@@ -26,7 +26,7 @@ async function addPronunciation(args) {
     `
     const result = await connection.query(
       insertSql, 
-      [name, soundsLike, audioPath, imagePath, imagePath]
+      [name, soundsLike, audioPath, imagePath, secret]
     );
 
     const insertedId = result[0].insertId;
