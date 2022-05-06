@@ -10,7 +10,7 @@ async function uploadFile(
   contentType: string
 ) {
   const name = `${prefix}/${uuid.v4()}.${extension}`;
-  const signedPostRes = await fetch(`${API_BASE_URL}/signed-token`, {
+  const signedPostRes = await fetch(`${API_BASE_URL}/signed-post`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
