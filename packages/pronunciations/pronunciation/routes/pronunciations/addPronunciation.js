@@ -21,7 +21,7 @@ async function addPronunciation(args) {
 
   try {
     const connection = await mysql;
-    const encryptedSecret = await encryptSecret();
+    const encryptedSecret = await encryptSecret(secret);
 
     const insertSql = `
       INSERT into pronunciations (name, sounds_like, audio_path, image_path, secret) 

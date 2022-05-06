@@ -13,13 +13,13 @@ async function removePronunciation(args) {
 
   try {
     const connection = await mysql;
-    const encryptedSecret = await encryptSecret();
+    const encryptedSecret = await encryptSecret(secret);
 
     const sql = `
       DELETE FROM pronunciations
       WHERE uuid = UUID_TO_BIN(?) AND secret = ?
     `;
-    
+
     const [results] = await connection.query(sql, [id, encryptedSecret]);
     if (results.affectedRows === 0) {
       console.log(`unauthed attempt to remove ${id}`)
