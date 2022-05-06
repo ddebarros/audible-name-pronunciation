@@ -18,7 +18,7 @@ async function removePronunciation(args) {
         BIN_TO_UUID(uuid) as uuid,
         secret
       FROM pronunciations
-      WHERE uuid = UUID_TO_BIN('?')
+      WHERE uuid = UUID_TO_BIN(?)
     `
 
     const [selectRow] = await connection.query(selectSql, [id]);
