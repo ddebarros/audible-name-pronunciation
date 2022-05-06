@@ -2,6 +2,7 @@
   "main": "index.js",
   "dependencies": {
     "mysql2": "^2.3.3",
-    "aws-sdk": "^2.1125.0"
+    "aws-sdk": "^2.1125.0",
+    "bcrypt": "^5.0.1"
   }
 }

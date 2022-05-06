@@ -1,4 +1,5 @@
 const mysql = require('../../mysql-client');
+const { encryptSecret } = require('../../utils');
 
 async function removePronunciation(args) {
   const id = args.params.pronunciation_id;
@@ -12,11 +13,14 @@ async function removePronunciation(args) {
 
   try {
     const connection = await mysql;
+    const encryptedSecret = await encryptSecret();
+
     const sql = `
       DELETE FROM pronunciations
       WHERE uuid = UUID_TO_BIN(?) AND secret = ?
     `;
-    const [results] = await connection.query(sql, [id, secret]);
+    
+    const [results] = await connection.query(sql, [id, encryptedSecret]);
     if (results.affectedRows === 0) {
       console.log(`unauthed attempt to remove ${id}`)
       return {
