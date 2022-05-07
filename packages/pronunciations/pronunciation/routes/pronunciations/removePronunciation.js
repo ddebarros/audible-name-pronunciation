@@ -59,7 +59,7 @@ async function removePronunciation(args) {
       }
     }
   } catch (error) {
-    console.log(error.message)
+    console.log(error)
     return {
       statusCode: 500,
     }
