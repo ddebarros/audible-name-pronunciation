@@ -13,7 +13,12 @@ async function listPronunciations(args) {
         CONCAT(?, image_path) as image_path
       FROM pronunciations
     `;
-    const [rows] = await connection.query(sql, [`${getSpacesFileBaseUrl()}/`, `${getSpacesFileBaseUrl()}/`])
+    
+    const [rows] = await connection.query(
+      sql, 
+      [`${getSpacesFileBaseUrl()}/`, `${getSpacesFileBaseUrl()}/`]
+    );
+
     return {
       body: rows,
     }

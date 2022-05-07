@@ -3,7 +3,8 @@ const { compareSecret } = require('../../utils');
 
 async function removePronunciation(args) {
   const id = args.params.pronunciation_id;
-  const secret = args.secret
+  const secret = args.secret;
+  
   if (!id || !secret) {
     return {
       statusCode: 400,
@@ -27,27 +28,27 @@ async function removePronunciation(args) {
       return {
         statusCode: 400,
         body: `unknown resource with id: ${id} `
-      } 
+      }
     }
-    
+
     console.log('selectedPronunciation: ', selectedPronunciation);
 
     const secretMatches = await compareSecret(secret, selectedPronunciation.secret);
     if (!secretMatches) {
-      console.log(`unauthed attempt to remove ${id}`)
+      console.log(`un-authenticated attempt to remove ${id}`)
       return {
         statusCode: 401,
         body: 'Unauthorized'
       }
     }
-    
+
     const deleteSql = `
       DELETE FROM pronunciations
       WHERE uuid = UUID_TO_BIN(?) AND secret = ?
     `;
 
-    const [results] = await connection.query(
-      deleteSql, 
+    await connection.query(
+      deleteSql,
       [id, selectedPronunciation.secret]
     );
 
