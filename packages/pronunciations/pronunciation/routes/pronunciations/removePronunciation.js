@@ -32,8 +32,6 @@ async function removePronunciation(args) {
       }
     }
 
-    console.log('selectedPronunciation: ', selectedPronunciation);
-
     const secretMatches = await compareSecret(secret, selectedPronunciation.secret);
     if (!secretMatches) {
       console.log(`un-authenticated attempt to remove ${id}`)
@@ -60,7 +58,7 @@ async function removePronunciation(args) {
       }
     }
   } catch (error) {
-    console.log(error)
+    console.log(error.message)
     return {
       statusCode: 500,
     }

@@ -1,5 +1,4 @@
-import { Box, Card, CardActions, CardContent, Divider, Grid, Paper, Skeleton, Typography } from '@mui/material';
-import React from 'react';
+import { Box, Card, CardActions, CardContent, Divider, Grid, Skeleton } from '@mui/material';
 
 const CardSkeleton = () => (
   <Card variant='outlined'>
@@ -17,6 +16,7 @@ const CardSkeleton = () => (
     </CardActions>
   </Card>
 )
+
 const PronunciationCardsSkeleton = () => {
   return (
     <Grid container spacing={2}>

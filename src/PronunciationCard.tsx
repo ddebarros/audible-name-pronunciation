@@ -1,9 +1,8 @@
-import { Button, Card, CardContent, Typography, Grid, Avatar, Divider, CardActions, IconButton, LinearProgress, Tooltip } from '@mui/material';
+import { Card, CardContent, Typography, Grid, Avatar, Divider, CardActions, IconButton, LinearProgress, Tooltip } from '@mui/material';
 import { Box } from '@mui/system';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import PlayCircleOutlinedIcon from '@mui/icons-material/PlayCircleOutlined';
 import PauseCircleOutlineOutlinedIcon from '@mui/icons-material/PauseCircleOutlineOutlined';
-import { useState, createRef, useEffect, useRef } from 'react';
+import { useState, createRef, useEffect, useCallback } from 'react';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { PronunciationSpec } from './usePronunciationState';
@@ -26,16 +25,18 @@ const PronunciationCard = ({ pronunciation, onRemove }: PronunciationCardProps) 
     setIsPlaying(true);
   }
 
-  const onPause = () => {
-    audioElementRef.current?.pause();
-    audioElementRef.current?.load();
+  const onPause = useCallback(() => {
+    const currentRef = audioElementRef.current;
+    currentRef?.pause();
+    currentRef?.load();
     setProgress(0);
     setIsPlaying(false);
-  }
+  }, [setProgress, setIsPlaying, audioElementRef]);
 
   useEffect(() => {
-    audioElementRef.current?.addEventListener('pause', onPause);
-    audioElementRef.current?.addEventListener('ended', onPause);
+    const currentRef = audioElementRef.current; 
+    currentRef?.addEventListener('pause', onPause);
+    currentRef?.addEventListener('ended', onPause);
 
     const onTimeupdate = (event: Event) => {
       const current = (event?.target as HTMLAudioElement).currentTime ?? 0;
@@ -44,14 +45,14 @@ const PronunciationCard = ({ pronunciation, onRemove }: PronunciationCardProps) 
       setProgress(percentage);
     };
 
-    audioElementRef.current?.addEventListener('timeupdate', onTimeupdate)
+    currentRef?.addEventListener('timeupdate', onTimeupdate)
 
     return () => {
-      audioElementRef.current?.removeEventListener('pause', onPause);
-      audioElementRef.current?.removeEventListener('ended', onPause);
-      audioElementRef.current?.removeEventListener('timeupdate', onTimeupdate)
+      currentRef?.removeEventListener('pause', onPause);
+      currentRef?.removeEventListener('ended', onPause);
+      currentRef?.removeEventListener('timeupdate', onTimeupdate)
     }
-  }, [audioElementRef.current]);
+  }, [audioElementRef, onPause]);
 
   return (
     <Grid item md={6} xs={12}>

@@ -36,7 +36,7 @@ const Pronunciations = () => {
   }, [pronunciations, searchTerm]);
 
   return (
-    <Box sx={{ height: '100vh' }} >
+    <Box sx={{ height: '100%', mb: 5 }} >
       <NewPronunciationDialog isOpened={isAddModalOpened} setOpened={setAddModalOpen} addPronunciation={addPronunciation} />
       <RemovePronunciationDialog pronunciation={pronunciationToDelete} removePronunciation={removePronunciation} isOpened={!!pronunciationToDelete} onClose={() => setPronunciationToDelete(undefined)} />
       <Header sx={{ padding: '100px 0 50px' }} component='header'>
@@ -56,7 +56,7 @@ const Pronunciations = () => {
           placeholder='Search'
         />
       </Paper>
-      
+
       {loadingPronunciations
         ? <PronunciationCardsSkeleton />
         : (<Grid container spacing={2}>
