@@ -5,6 +5,7 @@ const addPronunciation = require('./routes/pronunciations/addPronunciation');
 const createSignedPost = require('./routes/storage/createSignedPost');
 const removePronunciation = require('./routes/pronunciations/removePronunciation');
 
+console.log(process.env)
 const router = new Router();
 router.get('/', listPronunciations);
 router.get('/{pronunciation_id}', getPronunciation);
