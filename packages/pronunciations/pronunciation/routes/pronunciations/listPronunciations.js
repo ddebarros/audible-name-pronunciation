@@ -1,5 +1,6 @@
-const mysql = require('../../mysql-client');
-const { getSpacesFileBaseUrl } = require('../storage/spaces');
+const mysql = require("../../mysql-client");
+const { getSpacesFileBaseUrl } = require("../storage/spaces");
+const logger = require("../../utils/logger");
 
 async function listPronunciations(args) {
   try {
@@ -13,23 +14,23 @@ async function listPronunciations(args) {
         CONCAT(?, image_path) as image_path
       FROM pronunciations
     `;
-    
-    const [rows] = await connection.query(
-      sql, 
-      [`${getSpacesFileBaseUrl()}/`, `${getSpacesFileBaseUrl()}/`]
-    );
+
+    const [rows] = await connection.query(sql, [
+      `${getSpacesFileBaseUrl()}/`,
+      `${getSpacesFileBaseUrl()}/`,
+    ]);
 
     return {
       body: rows,
-    }
+    };
   } catch (error) {
-    console.error(error.message)
+    logger.error("Failed to list pronunciations", error);
     return {
-      statusCode: 400,
+      statusCode: 500,
       body: {
-        error: 'unable to retrieve pronunciations'
+        message: "Unable to retrieve pronunciations",
       },
-    }
+    };
   }
 }
 

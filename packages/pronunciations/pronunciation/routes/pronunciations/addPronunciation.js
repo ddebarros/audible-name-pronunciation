@@ -1,6 +1,7 @@
-const mysql = require('../../mysql-client');
-const { getSpacesFileBaseUrl } = require('../storage/spaces');
-const { encryptSecret } = require('../../utils');
+const mysql = require("../../mysql-client");
+const { getSpacesFileBaseUrl } = require("../storage/spaces");
+const { encryptSecret } = require("../../utils");
+const logger = require("../../utils/logger");
 
 async function addPronunciation(args) {
   const name = args.name;
@@ -14,9 +15,9 @@ async function addPronunciation(args) {
     return {
       statusCode: 400,
       body: {
-        message: 'Required parameters: name and secret'
-      }
-    }
+        message: "Required parameters: name and secret",
+      },
+    };
   }
 
   try {
@@ -26,11 +27,14 @@ async function addPronunciation(args) {
     const insertSql = `
       INSERT into pronunciations (name, sounds_like, audio_path, image_path, secret) 
       VALUES (?, ?, ?, ?, ?)
-    `
-    const result = await connection.query(
-      insertSql, 
-      [name, soundsLike, audioPath, imagePath, encryptedSecret]
-    );
+    `;
+    const result = await connection.query(insertSql, [
+      name,
+      soundsLike,
+      audioPath,
+      imagePath,
+      encryptedSecret,
+    ]);
 
     const insertedId = result[0].insertId;
     const selectSql = `
@@ -42,18 +46,27 @@ async function addPronunciation(args) {
         CONCAT(?, image_path) as image_path
       FROM pronunciations
       WHERE id = ?
-    `
-    const [rows] = await connection.query(selectSql, [`${getSpacesFileBaseUrl()}/`, `${getSpacesFileBaseUrl()}/`, insertedId])
+    `;
+    const [rows] = await connection.query(selectSql, [
+      `${getSpacesFileBaseUrl()}/`,
+      `${getSpacesFileBaseUrl()}/`,
+      insertedId,
+    ]);
 
     return {
       statusCode: 200,
-      body: rows[0]
-    }
+      body: rows[0],
+    };
   } catch (error) {
-    console.error(error)
+    logger.error("Failed to add pronunciation", error, {
+      name,
+      soundsLike,
+      hasImage: !!imagePath,
+      hasAudio: !!audioPath,
+    });
     return {
-      statusCode: 500
-    }
+      statusCode: 500,
+    };
   }
 }
 
